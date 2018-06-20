@@ -10,7 +10,7 @@ function Stack(){
 		return items[items.length-1];
 	};
 	this.isEmpty = function(){
-		return items.length == 0;
+		return items.length === 0;
 	};
 	this.size = function(){
 		return items.length;
