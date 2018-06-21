@@ -13,7 +13,7 @@ function Graph(){
 		adjList.get(w).push(v);
 	};
 
-	//顶点未被访问为白色，被搜索过的为黑色
+	//顶点未被访问为白色，访问但未被搜索过的为灰色，被搜索过的为黑色
 	var initializeColor = function(){
 		var color = {};
 		for (var i = 0; i < vertices.length; i++) {
@@ -31,9 +31,11 @@ function Graph(){
 		while(!queue.isEmpty()){
 			var u = queue.dequeue();
 			var neighbors = adjList.get(u);
+			color[u] = "grey";
 			for (var i = 0; i < neighbors.length; i++) {
 				var w = neighbors[i];
 				if(color[w] === "white"){
+					color[w] = "grey";
 					queue.enqueue(w)
 				}
 			}
@@ -60,9 +62,11 @@ function Graph(){
 		while(!queue.isEmpty()){
 			var u = queue.dequeue();
 			var neighbors = adjList.get(u);
+			color[u] = "grey";
 			for (var i = 0; i < neighbors.length; i++) {
 				var w = neighbors[i];
 				if(color[w] === "white"){
+					color[w] = "grey";
 					d[w] = d[u] + 1;
 					pred[w] = u;
 					queue.enqueue(w)
@@ -74,6 +78,31 @@ function Graph(){
 			distance: d,
 			predecessors: pred
 		};
+	};
+
+	//深度优先搜索，利用栈
+	var dfs = function(v,callback){
+		color[v] = "grey";
+		if(callback){
+			callback(v);
+		}
+		var neighbors = adjList.get(v);
+		for (var i = 0; i < neighbors.length; i++) {
+			var w = neighbors[i];
+			if(color[w] === "white"){
+				dfs(w,callback);
+			}
+		}
+		color[u] = "black";
+	};
+
+	this.dfsVisit = function(callback){
+		var color = initializeColor();
+		for (var i = 0; i < vertices.length; i++) {
+			if(color[vertices[i]] === "white"){
+				dfs(vertices[i], callback);
+			}
+		}
 	};
 }
 
