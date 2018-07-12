@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas碰撞球</title>
+	<style>
+		body{
+			margin:0;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas class="bubble"></canvas>
+	<script type="text/javascript">
+/*
+ 1.让canvas的可视区域与浏览器的高度一致
+  1.1：获取canvas元素
+  1.2：获取浏览器的宽高
+  1.3：给canvas设置一个可视区域的宽高
+ 2.利用canvas绘制一个图形
+  2.1：找到canvas元素可用来绘制图形
+  2.2：拿起一只笔并粘上颜色
+  2.3：构思待绘制图形的基本参数
+  2.4：下笔作画
+ 3.动画
+  3.1:1s内连续播放很多的静态图形（帧）
+  		60帧
+  		1/60画一张图
+  		定时器：setInterval(function(){},t);
+  		每隔t毫秒执行一次function
+  3.2：每张静态图形里面的物体状态发生变化（大小、位置、旋转、颜色、形状）
+ 4.绘制
+   面向对象编程（模块）
+*/
+	var oCanvas = document.querySelector(".bubble");
+	var w,h;
+	var aColor = ["#FFFF00","#666666","#60D4AE","#E667AF","339966"];
+	var aBubble = [];//存放新的小球
+	~~function(){
+		window.onresize = arguments.callee;
+		w = window.innerWidth;
+		h = window.innerHeight;
+		oCanvas.width=w;
+		oCanvas.height=h;
+	}();
+	var canCon = oCanvas.getContext("2d");
+
+	function Bubble(){};
+
+	Bubble.prototype={
+		init:function(){
+			this.x = random(0,w);//新生成的小球的X位置 0~w
+			this.y = random(0,h);//新生成的小球的y位置 0~h
+			this.r = random(1,3);//新生成的小球的半径
+			this.color = aColor[Math.floor(random(0,5))];//新的颜色值
+			this.vx = random(-1,1);
+			this.vy = random(-1,1);
+		},
+		draw:function(){
+			canCon.beginPath();//提笔重画				
+			canCon.fillStyle = this.color;
+			canCon.arc(this.x,this.y,this.r,0,Math.PI*2);
+			canCon.fill();
+		},
+		move:function(){
+			this.x+=this.vx;
+			this.y+=this.vy;
+			if(this.x-this.r<0||this.x+this.r>w){
+				this.vx=-this.vx;
+			}
+			if(this.y-this.r<0||this.y+this.r>h){
+				this.vy=-this.vy;
+			}
+			this.draw();
+		}
+	}
+	function random(min,max){
+		return Math.random()*(max-min)+min;
+	}
+
+	function createBubble(number){
+		for (var i=0;i<number;i++){
+			var bubble = new Bubble();
+			bubble.init();
+			bubble.draw();
+			aBubble.push(bubble);
+		}
+	}
+
+	createBubble(1000);
+	console.log(aBubble);
+
+	setInterval(function(){
+		canCon.clearRect(0,0,w,h);//擦除一个矩形区域	
+		for(var item of aBubble){		
+			item.move();
+		}
+	},1000/60)
+
+</script>
+</body>
+</html>
