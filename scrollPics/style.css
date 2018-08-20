@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    text-align: center;
+    color: #555555;
+}
+ul, li {    
+    list-style: none;
+}
+#scrollPics {
+    width: 533px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+#imgList {      
+    height: 300px;
+    width: 2200px; 
+    position: relative;    
+}
+#imgList li{    
+    float: left;
+}
+#indexList {
+    display: block;
+    /* height: 10px; */
+    width: 200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#indexList li {    
+    float: left;
+    margin: 20px 20px;
+    color: #555555;
+    cursor:pointer
+}
+#prev, #next {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 135px;
+    cursor:pointer
+}
+#prev {    
+    left: 50%;
+    margin-left: -300px;
+}
+#next {
+    right: 50%;
+    margin-right: -300px;
+}
